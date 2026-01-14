@@ -22,9 +22,13 @@
         <span id="status-text">Conectando con el servidor...</span>
       </div>
 
-      <!-- Futura área de carga de archivos -->
-      <div id="upload-area" style="margin-top: 2rem; display: none;">
-        <p>El sistema está listo.</p>
+      <!-- Área de carga de archivos -->
+      <div id="upload-area" class="upload-container" style="display: none;">
+        <div class="drop-zone" id="drop-zone">
+          <span class="drop-zone__prompt">Arrastra tu dataset aquí o haz clic para buscar</span>
+          <input type="file" name="myFile" id="file-input" class="drop-zone__input" accept=".csv">
+        </div>
+        <div id="file-info" class="file-info"></div>
       </div>
     </div>
   </div>

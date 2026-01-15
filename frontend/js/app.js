@@ -21,17 +21,62 @@ async function checkServerStatus() {
 document.addEventListener('DOMContentLoaded', () => {
   checkServerStatus();
 
+  // Lógica del botón Guardar Contexto
+  const saveContextBtn = document.getElementById('save-context-btn');
+  const userContextInput = document.getElementById('user-context');
+
+  if (saveContextBtn && userContextInput) {
+    saveContextBtn.addEventListener('click', () => {
+      const context = userContextInput.value.trim();
+      if (context) {
+        // Guardar en window para uso posterior
+        window.userProfile = context;
+
+        // Feedback visual
+        saveContextBtn.textContent = '✓ Contexto Guardado';
+        saveContextBtn.classList.add('saved');
+
+        // Guardar en localStorage para persistencia
+        localStorage.setItem('userContext', context);
+
+        setTimeout(() => {
+          saveContextBtn.innerHTML = '💾 Guardar Contexto';
+          saveContextBtn.classList.remove('saved');
+        }, 2000);
+      }
+    });
+
+    // Restaurar contexto guardado previamente
+    const savedContext = localStorage.getItem('userContext');
+    if (savedContext) {
+      userContextInput.value = savedContext;
+      window.userProfile = savedContext;
+    }
+  }
+
   const dropZone = document.getElementById('drop-zone');
   const fileInput = document.getElementById('file-input');
+  const browseBtn = document.querySelector('.btn-browse');
 
   // Solo configurar el área de carga si existe (para app.html)
   if (dropZone && fileInput) {
     const promptText = dropZone.querySelector('.drop-zone__prompt');
 
-    // Funcionalidad: Click para abrir explorador de archivos
-    dropZone.addEventListener('click', () => {
-      fileInput.click();
+    // Funcionalidad: Click en el drop-zone para abrir explorador
+    dropZone.addEventListener('click', (e) => {
+      // Evitar doble disparo si se hace clic en el botón
+      if (e.target !== browseBtn) {
+        fileInput.click();
+      }
     });
+
+    // Funcionalidad: Botón "Explorar archivos"
+    if (browseBtn) {
+      browseBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevenir que el evento burbujee al drop-zone
+        fileInput.click();
+      });
+    }
 
     // Funcionalidad: Detectar cambio en el input (selección manual)
     fileInput.addEventListener('change', () => {
@@ -68,6 +113,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateDropZoneUI(file) {
     const fileInfo = document.getElementById('file-info');
     const dropZone = document.getElementById('drop-zone');
+
+    // Mantener referencia al archivo actual
+    window.currentFile = file;
+
     if (dropZone) {
       dropZone.style.borderColor = 'var(--success)';
       dropZone.style.background = 'rgba(16, 185, 129, 0.05)';
@@ -75,10 +124,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (fileInfo) {
       fileInfo.style.display = 'block';
-      fileInfo.innerHTML = `<strong>Archivo listo:</strong> ${file.name} <br> <small>${(file.size / 1024).toFixed(2)} KB</small>`;
+      fileInfo.innerHTML = `<strong>✓ Archivo cargado:</strong> ${file.name} <br> <small>${(file.size / 1024).toFixed(2)} KB</small>`;
     }
 
-    // Aquí podríamos disparar la subida automática
+    // Subir automáticamente
     uploadFile(file);
   }
 
@@ -88,6 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const statusText = document.getElementById('status-text');
     const userContext = document.getElementById('user-context')?.value || "";
+    const fileInfo = document.getElementById('file-info');
 
     if (statusText) statusText.textContent = "Analizando...";
 
@@ -101,6 +151,30 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = await response.json();
         console.log("Upload success:", data);
         if (statusText) statusText.textContent = "¡Datos Procesados!";
+
+        // Actualizar info del archivo con éxito - feedback persistente
+        if (fileInfo) {
+          fileInfo.style.display = 'block';
+          fileInfo.className = 'file-info-badge success';
+          fileInfo.innerHTML = `
+            <div class="file-success-indicator">
+              <span class="success-icon">✓</span>
+              <div>
+                <strong>${data.filename}</strong><br>
+                <small>${data.columns.length} columnas • ${data.shape[0]} filas • Procesado en memoria</small>
+              </div>
+            </div>
+          `;
+        }
+
+        // Guardar en sessionStorage para persistir durante la sesión
+        sessionStorage.setItem('uploadedFile', JSON.stringify({
+          filename: data.filename,
+          columns: data.columns,
+          shape: data.shape,
+          automl_result: data.automl_result,
+          analysis_summary: data.analysis_summary
+        }));
 
         // Guardar contexto para el chat
         window.currentContext = {
@@ -118,20 +192,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Notificar al usuario en el chat
+        const bestModel = data.automl_result?.best_model || "un modelo";
         const welcomeMsg = userContext
-          ? `¡Listo! He procesado **${data.filename}** teniendo en cuenta tu objetivo: *"${userContext}"*. He encontrado que el mejor modelo es **${data.automl_result.best_model}**. ¿Qué analizamos ahora?`
-          : `¡He procesado tu archivo **${data.filename}**! He detectado ${data.columns.length} columnas. El mejor modelo para estos datos es **${data.automl_result.best_model}**. ¿En qué puedo ayudarte?`;
+          ? `¡Listo! He procesado **${data.filename}** teniendo en cuenta tu objetivo: *"${userContext}"*. He encontrado que el mejor modelo es **${bestModel}**. ¿Qué analizamos ahora?`
+          : `¡He procesado tu archivo **${data.filename}**! He detectado ${data.columns.length} columnas. El mejor modelo para estos datos es **${bestModel}**. ¿En qué puedo ayudarte?`;
 
         appendMessage("bot", welcomeMsg);
         openChat();
 
       } else {
-        console.error("Upload failed");
-        if (statusText) statusText.textContent = "Error en subida";
+        const errorText = await response.text();
+        console.error("Upload failed:", errorText);
+        if (statusText) statusText.textContent = "Error en procesamiento";
+        if (fileInfo) {
+          fileInfo.innerHTML = `<strong>⚠ Error:</strong> No se pudo procesar el archivo. <br><small>Verifica el formato.</small>`;
+          fileInfo.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+          fileInfo.style.background = 'rgba(239, 68, 68, 0.1)';
+          fileInfo.style.color = '#ef4444';
+        }
       }
     } catch (error) {
       console.error("Error:", error);
       if (statusText) statusText.textContent = "Error de Conexión";
+      // Mantener el archivo visible aunque haya error de conexión
+      if (fileInfo && window.currentFile) {
+        fileInfo.innerHTML = `<strong>⚠ Sin conexión:</strong> ${window.currentFile.name} <br><small>Archivo guardado localmente. Reconecta el servidor.</small>`;
+        fileInfo.style.borderColor = 'rgba(251, 191, 36, 0.3)';
+        fileInfo.style.background = 'rgba(251, 191, 36, 0.1)';
+        fileInfo.style.color = '#fbbf24';
+      }
     }
   }
 

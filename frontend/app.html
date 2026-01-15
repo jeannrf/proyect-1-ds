@@ -34,68 +34,88 @@
             </div>
         </header>
 
-        <main>
-            <section class="hero-section" style="margin-bottom: 2rem;">
+        <main class="app-main">
+            <!-- Hero compacto -->
+            <section class="app-hero">
                 <h2>Panel de Control <span class="gradient-text">IA</span></h2>
-                <p>Sube tus datos y deja que nuestros algoritmos hagan el trabajo duro.</p>
+                <p>Configura tu proyecto, sube tus datos y obtén resultados al instante.</p>
             </section>
 
-            <!-- Sección de Carga -->
-            <div class="glass-card upload-container">
-                <div class="card-header">
-                    <span class="icon">📂</span>
-                    <h3>Configuración del Proyecto</h3>
-                </div>
+            <!-- Layout principal de dos columnas -->
+            <div class="dashboard-layout">
+                <!-- Columna Izquierda: Configuración y Carga -->
+                <div class="dashboard-left">
+                    <div class="glass-card config-card">
+                        <div class="card-header">
+                            <div class="header-icon">⚙️</div>
+                            <div>
+                                <h3>Configuración del Proyecto</h3>
+                                <span class="card-subtitle">Define tu contexto para mejores resultados</span>
+                            </div>
+                        </div>
 
-                <!-- Contexto del Usuario -->
-                <div class="context-area">
-                    <label for="user-context">¿Quién eres y cuál es tu objetivo?</label>
-                    <textarea id="user-context"
-                        placeholder="Ej: Soy analista financiero y busco predecir la fuga de clientes de este trimestre..."></textarea>
-                </div>
+                        <div class="context-area">
+                            <label for="user-context">¿Quién eres y cuál es tu objetivo?</label>
+                            <textarea id="user-context"
+                                placeholder="Ej: Soy analista financiero y busco predecir la fuga de clientes..."></textarea>
+                        </div>
 
-                <div class="drop-zone" id="drop-zone">
-                    <div class="drop-zone__thumb" data-label="myfile.txt"></div>
-                    <div class="drop-zone__content">
-                        <i class="cloud-icon">☁️</i>
-                        <p class="drop-zone__prompt">
-                            Sube tu dataset (CSV, Excel o JSON) <br>
-                            <span class="sub-prompt">o haz clic para explorar</span>
-                        </p>
-                        <input type="file" name="myFile" id="file-input" class="drop-zone__input"
-                            accept=".csv,.xlsx,.xls,.json">
-                    </div>
-                </div>
-                <div id="file-info" class="file-info-badge" style="display: none;"></div>
-            </div>
-
-            <!-- Dashboard de Control -->
-            <div class="features-grid">
-                <div class="glass-card feature-card active" id="training-card">
-                    <div class="feature-icon">🧠</div>
-                    <div>
-                        <h4>Auto Training</h4>
-                        <p>Entrenamiento automático de múltiples modelos ML.</p>
-                        <!-- Contenedor de Resultados -->
-                        <div id="ml-results-container" class="ml-results-list">
-                            <!-- Se llenará dinámicamente -->
+                        <div class="upload-section">
+                            <label class="upload-label">Dataset de entrada</label>
+                            <div class="drop-zone" id="drop-zone">
+                                <div class="drop-zone__content">
+                                    <div class="upload-icon-wrapper">
+                                        <span class="upload-icon">📁</span>
+                                    </div>
+                                    <p class="drop-zone__prompt">
+                                        <strong>Arrastra tu archivo aquí</strong><br>
+                                        <span class="sub-prompt">CSV, Excel o JSON • Máx 10MB</span>
+                                    </p>
+                                    <button type="button" class="btn-browse">Explorar archivos</button>
+                                    <input type="file" name="myFile" id="file-input" class="drop-zone__input"
+                                        accept=".csv,.xlsx,.xls,.json">
+                                </div>
+                            </div>
+                            <div id="file-info" class="file-info-badge"></div>
                         </div>
                     </div>
                 </div>
 
-                <div class="feature-card glass-panel">
-                    <div class="feature-icon">🤖</div>
-                    <div class="feature-content">
-                        <h4>Consultor IA</h4>
-                        <p>Análisis y recomendaciones en lenguaje natural.</p>
+                <!-- Columna Derecha: Resultados y Features -->
+                <div class="dashboard-right">
+                    <!-- Tarjeta de Resultados ML -->
+                    <div class="glass-card results-card" id="training-card">
+                        <div class="card-header">
+                            <div class="header-icon pulse">🧠</div>
+                            <div>
+                                <h3>Auto Training</h3>
+                                <span class="card-subtitle">Resultados del análisis automático</span>
+                            </div>
+                        </div>
+                        <div id="ml-results-container" class="ml-results-list">
+                            <div class="empty-state">
+                                <span class="empty-icon">📊</span>
+                                <p>Sube un dataset para ver los resultados del entrenamiento automático</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="feature-card glass-panel">
-                    <div class="feature-icon">📊</div>
-                    <div class="feature-content">
-                        <h4>Visualización</h4>
-                        <p>Gráficos interactivos de métricas y predicciones.</p>
+                    <!-- Grid de Features -->
+                    <div class="features-mini-grid">
+                        <div class="mini-feature-card glass-card" id="chat-trigger">
+                            <span class="mini-icon">🤖</span>
+                            <div>
+                                <h4>Consultor IA</h4>
+                                <p>Pregunta sobre tus datos</p>
+                            </div>
+                        </div>
+                        <div class="mini-feature-card glass-card">
+                            <span class="mini-icon">📈</span>
+                            <div>
+                                <h4>Visualización</h4>
+                                <p>Gráficos interactivos</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

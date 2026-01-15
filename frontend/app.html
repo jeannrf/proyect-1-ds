@@ -40,50 +40,64 @@
                 <p>Sube tus datos y deja que nuestros algoritmos hagan el trabajo duro.</p>
             </section>
 
-            <div class="dashboard-grid">
-                <!-- Panel Principal: Carga de Archivos -->
-                <section class="upload-card glass-panel">
-                    <h3><span class="icon">📂</span> Cargar Dataset</h3>
+            <!-- Sección de Carga -->
+            <div class="glass-card upload-container">
+                <div class="card-header">
+                    <span class="icon">📂</span>
+                    <h3>Configuración del Proyecto</h3>
+                </div>
 
-                    <div id="upload-area" class="upload-area">
-                        <div class="drop-zone" id="drop-zone">
-                            <div class="upload-icon">☁️</div>
-                            <p class="drop-zone__prompt">
-                                Arrastra tu archivo CSV aquí <br>
-                                <span class="sub-prompt">o haz clic para explorar</span>
-                            </p>
-                            <input type="file" name="myFile" id="file-input" class="drop-zone__input" accept=".csv">
-                        </div>
-                        <div id="file-info" class="file-info"></div>
+                <!-- Contexto del Usuario -->
+                <div class="context-area">
+                    <label for="user-context">¿Quién eres y cuál es tu objetivo?</label>
+                    <textarea id="user-context"
+                        placeholder="Ej: Soy analista financiero y busco predecir la fuga de clientes de este trimestre..."></textarea>
+                </div>
+
+                <div class="drop-zone" id="drop-zone">
+                    <div class="drop-zone__thumb" data-label="myfile.txt"></div>
+                    <div class="drop-zone__content">
+                        <i class="cloud-icon">☁️</i>
+                        <p class="drop-zone__prompt">
+                            Sube tu dataset (CSV, Excel o JSON) <br>
+                            <span class="sub-prompt">o haz clic para explorar</span>
+                        </p>
+                        <input type="file" name="myFile" id="file-input" class="drop-zone__input"
+                            accept=".csv,.xlsx,.xls,.json">
                     </div>
-                </section>
+                </div>
+                <div id="file-info" class="file-info-badge" style="display: none;"></div>
+            </div>
 
-                <!-- Panel Lateral: Etapas del Proceso -->
-                <aside class="features-sidebar">
-                    <div class="feature-card glass-panel">
-                        <div class="feature-icon">🧠</div>
-                        <div class="feature-content">
-                            <h4>Auto Training</h4>
-                            <p>Entrenamiento automático de múltiples modelos ML.</p>
-                        </div>
-                    </div>
-
-                    <div class="feature-card glass-panel">
-                        <div class="feature-icon">🤖</div>
-                        <div class="feature-content">
-                            <h4>Consultor IA</h4>
-                            <p>Análisis y recomendaciones en lenguaje natural.</p>
-                        </div>
-                    </div>
-
-                    <div class="feature-card glass-panel">
-                        <div class="feature-icon">📊</div>
-                        <div class="feature-content">
-                            <h4>Visualización</h4>
-                            <p>Gráficos interactivos de métricas y predicciones.</p>
+            <!-- Dashboard de Control -->
+            <div class="features-grid">
+                <div class="glass-card feature-card active" id="training-card">
+                    <div class="feature-icon">🧠</div>
+                    <div>
+                        <h4>Auto Training</h4>
+                        <p>Entrenamiento automático de múltiples modelos ML.</p>
+                        <!-- Contenedor de Resultados -->
+                        <div id="ml-results-container" class="ml-results-list">
+                            <!-- Se llenará dinámicamente -->
                         </div>
                     </div>
-                </aside>
+                </div>
+
+                <div class="feature-card glass-panel">
+                    <div class="feature-icon">🤖</div>
+                    <div class="feature-content">
+                        <h4>Consultor IA</h4>
+                        <p>Análisis y recomendaciones en lenguaje natural.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card glass-panel">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-content">
+                        <h4>Visualización</h4>
+                        <p>Gráficos interactivos de métricas y predicciones.</p>
+                    </div>
+                </div>
             </div>
         </main>
     </div>

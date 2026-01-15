@@ -1510,3 +1510,11 @@ h1 {
   width: 100%;
   box-sizing: border-box;
 }
+/* Iconos Profesionales Font Awesome */
+.header-icon i { font-size: 1.6rem; color: #fff; filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.4)); }
+.mini-icon i { font-size: 1.3rem; color: #fff; }
+.upload-icon-wrapper i { font-size: 3rem; color: var(--primary-glow); }
+.empty-icon i { font-size: 3.5rem; opacity: 0.2; }
+.bot-avatar i { font-size: 1.5rem; color: var(--primary-glow); }
+.success-icon i { color: var(--success); }
+.preview-title i { margin-right: 0.5rem; color: var(--primary-glow); }

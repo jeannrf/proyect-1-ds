@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
@@ -25,7 +26,7 @@
 
             <div class="header-actions">
                 <button id="toggle-chat-btn" class="btn-icon" title="Abrir Asistente IA">
-                    <span class="icon">🤖</span> ConsultIA
+                    <i class="fa-solid fa-robot"></i> ConsultIA
                 </button>
                 <div id="status-indicator" class="status-badge">
                     <span class="status-dot"></span>
@@ -47,7 +48,7 @@
                 <div class="dashboard-left">
                     <div class="glass-card config-card">
                         <div class="card-header">
-                            <div class="header-icon">⚙️</div>
+                            <div class="header-icon"><i class="fa-solid fa-sliders"></i></div>
                             <div>
                                 <h3>Configuración del Proyecto</h3>
                                 <span class="card-subtitle">Define tu contexto para mejores resultados</span>
@@ -59,7 +60,7 @@
                             <textarea id="user-context"
                                 placeholder="Ej: Soy analista financiero y busco predecir la fuga de clientes..."></textarea>
                             <button type="button" id="save-context-btn" class="btn-save-context">
-                                💾 Guardar Contexto
+                                <i class="fa-solid fa-floppy-disk"></i> Guardar Contexto
                             </button>
                         </div>
 
@@ -68,7 +69,7 @@
                             <div class="drop-zone" id="drop-zone">
                                 <div class="drop-zone__content">
                                     <div class="upload-icon-wrapper">
-                                        <span class="upload-icon">📁</span>
+                                        <i class="fa-solid fa-cloud-arrow-up"></i>
                                     </div>
                                     <p class="drop-zone__prompt">
                                         <strong>Arrastra tu archivo aquí</strong><br>
@@ -87,67 +88,48 @@
                 <!-- Columna Derecha: Resultados y Features -->
                 <div class="dashboard-right">
                     <!-- Tarjeta de Resultados ML -->
-                    <div class="glass-card results-card" id="training-card">
-                        <div class="card-header">
-                            <div class="header-icon pulse">🧠</div>
-                            <div>
-                                <h3>Auto Training</h3>
-                                <span class="card-subtitle">Resultados del análisis automático</span>
-                            </div>
-                        </div>
-
-                        <!-- Vista previa de datos -->
-                        <div id="data-preview-container" class="data-preview-section" style="display: none;">
-                            <h4 class="preview-title">📋 Vista Previa del Dataset</h4>
-                            <div class="table-wrapper">
-                                <table id="preview-table" class="data-preview-table">
-                                    <!-- Se llenará dinámicamente -->
-                                </table>
-                            </div>
-                        </div>
-
-                        <!-- Resultados de ML -->
-                        <div id="ml-results-container" class="ml-results-list">
-                            <div class="empty-state">
-                                <span class="empty-icon">📊</span>
-                                <p>Sube un dataset para ver los resultados del entrenamiento automático</p>
-                            </div>
+                    <div class="card-header">
+                        <div class="header-icon pulse"><i class="fa-solid fa-microchip"></i></div>
+                        <div>
+                            <h3>Auto Training</h3>
+                            <span class="card-subtitle">Resultados del análisis automático</span>
                         </div>
                     </div>
 
-                    <!-- Mini Features debajo de Auto Training -->
-                    <div class="features-mini-grid">
-                        <div class="mini-feature-card glass-card" id="chat-trigger">
-                            <span class="mini-icon">🤖</span>
-                            <div>
-                                <h4>Consultor IA</h4>
-                                <p>Pregunta sobre tus datos</p>
-                            </div>
+                    <div id="data-preview-container" class="data-preview-section" style="display: none;">
+                        <h4 class="preview-title"><i class="fa-solid fa-table-list"></i> Vista Previa del Dataset</h4>
+                        <div class="table-wrapper">
+                            <table id="preview-table" class="data-preview-table">
+                                <!-- Se llenará dinámicamente -->
+                            </table>
                         </div>
-                        <div class="mini-feature-card glass-card">
-                            <span class="mini-icon">📈</span>
-                            <div>
-                                <h4>Visualización</h4>
-                                <p>Gráficos interactivos</p>
-                            </div>
+                    </div>
+
+                    <div id="ml-results-container" class="ml-results-list">
+                        <div class="empty-state">
+                            <div class="empty-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                            <p>Sube un dataset para ver los resultados del entrenamiento automático</p>
                         </div>
                     </div>
                 </div>
+
+                <!-- Espacio libre para expansión -->
             </div>
-        </main>
+    </div>
+    </main>
     </div>
 
     <!-- Chat Sidebar -->
     <aside id="chat-sidebar" class="chat-sidebar">
         <div class="chat-header">
             <div class="chat-title">
-                <span class="bot-avatar">🤖</span>
+                <span class="bot-avatar"><i class="fa-solid fa-robot"></i></span>
                 <div>
                     <h3>ConsultIA</h3>
                     <span class="status-text-online">En línea</span>
                 </div>
             </div>
-            <button id="close-chat-btn" class="btn-close">×</button>
+            <button id="close-chat-btn" class="btn-close"><i class="fa-solid fa-xmark"></i></button>
         </div>
 
         <div id="chat-messages" class="chat-messages">
@@ -159,7 +141,7 @@
 
         <div class="chat-input-area">
             <input type="text" id="chat-input" placeholder="Escribe tu pregunta..." autocomplete="off">
-            <button id="send-btn" class="btn-send">➤</button>
+            <button id="send-btn" class="btn-send"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
     </aside>
 

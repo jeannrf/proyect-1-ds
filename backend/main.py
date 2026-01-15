@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from files import DataLoader
 
 app = FastAPI()
 
@@ -19,3 +20,23 @@ def read_root():
 @app.get("/health")
 def health_check():
     return {"status": "ok", "service": "backend"}
+
+@app.post("/upload")
+async def upload_file(file: UploadFile = File(...)):
+    """
+    Endpoint para subir archivos (CSV, Excel, JSON, Parquet).
+    Utiliza DataLoader para detectar y cargar el contenido.
+    """
+    try:
+        content = await file.read()
+        df = DataLoader.load_data(content, file.filename)
+        
+        return {
+            "filename": file.filename,
+            "detected_format": DataLoader.detect_format(content),
+            "shape": df.shape,
+            "columns": df.columns.tolist(),
+            "preview": df.head(5).to_dict(orient="records")
+        }
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error processing file: {str(e)}")

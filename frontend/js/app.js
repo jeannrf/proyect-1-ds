@@ -186,6 +186,11 @@ document.addEventListener('DOMContentLoaded', () => {
           analysis_summary: data.analysis_summary
         };
 
+        // Renderizar vista previa de datos
+        if (data.preview && data.columns) {
+          renderDataPreview(data.columns, data.preview);
+        }
+
         // Renderizar resultados de ML
         if (data.automl_result) {
           renderMLResults(data.automl_result);
@@ -222,6 +227,46 @@ document.addEventListener('DOMContentLoaded', () => {
         fileInfo.style.color = '#fbbf24';
       }
     }
+  }
+
+  // Renderiza vista previa de las primeras filas del dataset
+  function renderDataPreview(columns, preview) {
+    const container = document.getElementById('data-preview-container');
+    const table = document.getElementById('preview-table');
+    if (!container || !table) return;
+
+    // Mostrar solo las primeras 5 columnas para no saturar la vista
+    const maxCols = 5;
+    const displayCols = columns.slice(0, maxCols);
+    const hasMoreCols = columns.length > maxCols;
+
+    // Crear encabezados
+    let headerRow = '<thead><tr>';
+    displayCols.forEach(col => {
+      headerRow += `<th>${col}</th>`;
+    });
+    if (hasMoreCols) {
+      headerRow += `<th class="more-cols">+${columns.length - maxCols} más</th>`;
+    }
+    headerRow += '</tr></thead>';
+
+    // Crear filas de datos
+    let bodyRows = '<tbody>';
+    preview.forEach(row => {
+      bodyRows += '<tr>';
+      displayCols.forEach(col => {
+        const value = row[col] !== undefined ? row[col] : '-';
+        bodyRows += `<td>${value}</td>`;
+      });
+      if (hasMoreCols) {
+        bodyRows += '<td class="more-cols">...</td>';
+      }
+      bodyRows += '</tr>';
+    });
+    bodyRows += '</tbody>';
+
+    table.innerHTML = headerRow + bodyRows;
+    container.style.display = 'block';
   }
 
   function renderMLResults(result) {
@@ -264,6 +309,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const chatInput = document.getElementById('chat-input');
   const sendBtn = document.getElementById('send-btn');
   const chatMessages = document.getElementById('chat-messages');
+  const appContainer = document.querySelector('.app-container');
+  const chatTrigger = document.getElementById('chat-trigger');
 
   function openChat() {
     if (chatSidebar) chatSidebar.classList.add('open');
@@ -273,8 +320,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (chatSidebar) chatSidebar.classList.remove('open');
   }
 
-  if (toggleBtn) toggleBtn.addEventListener('click', openChat);
+  function toggleChat() {
+    if (chatSidebar && chatSidebar.classList.contains('open')) {
+      closeChat();
+    } else {
+      openChat();
+    }
+  }
+
+  if (toggleBtn) toggleBtn.addEventListener('click', toggleChat);
   if (closeBtn) closeBtn.addEventListener('click', closeChat);
+  if (chatTrigger) chatTrigger.addEventListener('click', openChat);
 
   // Send Message Logic
   async function sendMessage() {

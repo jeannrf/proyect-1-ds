@@ -1,100 +1,72 @@
 import pandas as pd
-import json
-import csv
-import io
+import os
 
-class DataLoader:
+def load_universal_data(file_path):
+    ext = os.path.splitext(file_path)[1].lower()
+    
+    try:
+        if ext == '.csv':
+            df = pd.read_csv(file_path, sep=None, engine='python')
+        elif ext in ['.xlsx', '.xls']:
+            df = pd.read_excel(file_path)
+        elif ext == '.json':
+            df = pd.read_json(file_path)
+        elif ext == '.parquet':
+            df = pd.read_parquet(file_path)
+        else:
+            raise ValueError(f"Formato {ext} no soportado actualmente.")
+            
+        return clean_data_logic(df)
+    
+    except Exception as e:
+        raise ValueError(f"Error al cargar el archivo detectado como {ext}: {str(e)}")
+
+class FileManager:
     """
-    Clase encargada de detectar automáticamente el formato de un archivo y cargarlo.
+    Clase para gestionar el almacenamiento físico de los archivos.
     """
+    UPLOAD_DIR = "uploads"
 
     @staticmethod
-    def detect_format(file_content: bytes) -> str:
-        """
-        Intenta detectar el formato basado en el contenido del archivo (bytes).
-        Retorna: 'csv', 'json', 'excel', 'parquet' o 'unknown'.
-        """
-        # 1. Detectar Excel (XLSX signature: PK\x03\x04)
-        if file_content.startswith(b'PK\x03\x04'):
-            # Podría ser zip, pero en contexto de datos suele ser xlsx
-            return 'excel'
-        
-        # 2. Detectar Excel antiguo (XLS signature: D0 CF 11 E0)
-        if file_content.startswith(b'\xD0\xCF\x11\xE0'):
-            return 'excel'
-            
-        # 3. Detectar Parquet (PAR1)
-        if file_content.startswith(b'PAR1'):
-            return 'parquet'
+    def ensure_upload_dir():
+        import os
+        if not os.path.exists(FileManager.UPLOAD_DIR):
+            os.makedirs(FileManager.UPLOAD_DIR)
 
-        # 4. Intentar interpretar como texto
+    @staticmethod
+    def save_file(file_content: bytes, filename: str) -> str:
+        """
+        Guarda el archivo en el directorio de uploads y retorna la ruta absoluta.
+        """
+        import os
+        FileManager.ensure_upload_dir()
+        file_path = os.path.join(FileManager.UPLOAD_DIR, filename)
+        
+        with open(file_path, "wb") as f:
+            f.write(file_content)
+            
+        return os.path.abspath(file_path)
+
+    @staticmethod
+    def list_files():
+        import os
+        FileManager.ensure_upload_dir()
+        return os.listdir(FileManager.UPLOAD_DIR)
+
+def clean_data_logic(df):
+
+    df = df.drop_duplicates()
+    df = df.dropna(how='all', axis=1)
+    df.columns = [str(col).strip().replace(" ", "_").lower() for col in df.columns]
+    
+    for col in df.columns:
+    if df[col].dtype == 'object':
         try:
-            text_content = file_content.decode('utf-8', errors='ignore').strip()
-            
-            # JSON? Empieza por { o [
-            if text_content.startswith('{') or text_content.startswith('['):
-                try:
-                    json.loads(text_content)
-                    return 'json'
-                except ValueError:
-                    pass # Parecía JSON pero no lo es
-            
-            # CSV? Usar csv.Sniffer
-            # Tomamos una muestra de las primeras lineas
-            sample = '\n'.join(text_content.splitlines()[:5])
-            try:
-                dialect = csv.Sniffer().sniff(sample)
-                return 'csv'
-            except csv.Error:
-                pass
-                
-        except Exception:
+            df[col] = pd.to_datetime(df[col])
+            df[f'{col}_year'] = df[col].dt.year
+            df[f'{col}_month'] = df[col].dt.month
+            df = df.drop(columns=[col])
+        except:
             pass
-            
-        return 'unknown'
-
-    @staticmethod
-    def load_data(file_content: bytes, filename: str = "") -> pd.DataFrame:
-        """
-        Carga los datos en un DataFrame de Pandas detectando el formato.
-        """
-        format_type = DataLoader.detect_format(file_content)
-        
-        # Buffer de bytes para pandas
-        buffer = io.BytesIO(file_content)
-        
-        try:
-            if format_type == 'csv':
-                # Volver al inicio del buffer/texto es necesario a veces, 
-                # pero read_csv admite bytes si encoding es correcto o StringIO
-                buffer.seek(0)
-                return pd.read_csv(buffer)
-                
-            elif format_type == 'json':
-                buffer.seek(0)
-                return pd.read_json(buffer)
-                
-            elif format_type == 'excel':
-                buffer.seek(0)
-                return pd.read_excel(buffer)
-                
-            elif format_type == 'parquet':
-                buffer.seek(0)
-                return pd.read_parquet(buffer)
-                
-            else:
-                # Fallback: Intentar por extensión si el contenido falló
-                if filename.endswith('.csv'):
-                    buffer.seek(0)
-                    return pd.read_csv(buffer)
-                elif filename.endswith('.xlsx') or filename.endswith('.xls'):
-                    buffer.seek(0)
-                    return pd.read_excel(buffer)
-                elif filename.endswith('.json'):
-                    buffer.seek(0)
-                    return pd.read_json(buffer)
-                
-                raise ValueError("Formato de archivo no reconocido o no soportado.")
-                
-        except Exception as e:
-            raise ValueError(f"Error al cargar el archivo detectado como {format_type}: {str(e)}")
+    
+    return df

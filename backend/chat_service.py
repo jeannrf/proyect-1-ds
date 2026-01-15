@@ -17,11 +17,13 @@ class ChatService:
 
         # Construir el System Prompt basado en el contexto
         if context and context.get("has_data"):
+            analysis_summary = context.get("analysis_summary", "")
             system_prompt = (
                 f"Eres ConsultIA, un experto analista de datos. "
-                f"El usuario ha cargado un archivo {context.get('filename')} con formato {context.get('format')}. "
-                f"El dataset tiene las columnas: {', '.join(context.get('columns', []))}. "
-                "Responde preguntas sobre estos datos de forma concisa y útil para el negocio."
+                f"El usuario ha cargado un archivo {context.get('filename')} ({context.get('format')}).\n"
+                f"Resumen de los datos:\n{analysis_summary}\n"
+                "Responde preguntas sobre estos datos, sugiere análisis adicionales o modelos de ML aplicables. "
+                "Sé conciso, profesional y útil."
             )
         else:
             system_prompt = (

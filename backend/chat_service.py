@@ -11,9 +11,9 @@ class ChatService:
         else:
             self.client = groq.Groq(api_key=self.api_key)
 
-    def get_response(self, message: str, context: dict = None) -> str:
-        if not self.client:
-            return "Error: API Key de Groq no configurada. Por favor configura GROQ_API_KEY en el backend."
+        # Obtener contexto del perfil del usuario si existe
+        user_profile = context.get("user_profile", "") if context else ""
+        profile_instruction = f"\nInformación del usuario y objetivos: {user_profile}\n" if user_profile else ""
 
         # Construir el System Prompt basado en el contexto
         if context and context.get("has_data"):
@@ -21,15 +21,17 @@ class ChatService:
             system_prompt = (
                 f"Eres ConsultIA, un experto analista de datos. "
                 f"El usuario ha cargado un archivo {context.get('filename')} ({context.get('format')}).\n"
-                f"Resumen de los datos:\n{analysis_summary}\n"
-                "Responde preguntas sobre estos datos, sugiere análisis adicionales o modelos de ML aplicables. "
-                "Sé conciso, profesional y útil."
+                f"{profile_instruction}"
+                f"Resumen técnico de los datos:\n{analysis_summary}\n"
+                "Usa esta información para responder preguntas, sugerir análisis adicionales enfocados en los objetivos del usuario "
+                "o modelos de ML aplicables. Sé conciso, profesional, útil y mantén el foco en sus metas."
             )
         else:
             system_prompt = (
                 "Eres ConsultIA, un asistente inteligente para la plataforma AutoML Advisor. "
-                "Tu objetivo es guiar al usuario. Explícale que debe subir un dataset (CSV) "
-                "para que puedas analizarlo y entrenar modelos. Sé amable y motivador."
+                f"{profile_instruction}"
+                "Tu objetivo es guiar al usuario. Dile que para empezar su análisis debe subir un dataset (CSV, Excel o JSON). "
+                "Si el usuario ya definió sus objetivos, salúdalo reconociendo quien es y motívalo a subir sus datos para empezar."
             )
 
         try:

@@ -1,6 +1,10 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from files import DataLoader
+from dotenv import load_dotenv
+
+# Cargar variables de entorno del archivo .env
+load_dotenv()
 
 app = FastAPI()
 

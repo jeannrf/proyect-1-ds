@@ -90,7 +90,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = await response.json();
         console.log("Upload success:", data);
         statusText.textContent = "¡Datos Procesados!";
-        // Aquí podrías actualizar la UI con los datos recibidos (data.preview, data.columns, etc)
+
+        // Guardar contexto para el chat (simulado por ahora)
+        window.currentContext = {
+          has_data: true,
+          filename: data.filename,
+          columns: data.columns,
+          format: data.detected_format
+        };
+
+        // Notificar al usuario en el chat si está abierto
+        appendMessage("bot", `¡He procesado tu archivo **${data.filename}**! Veo que tiene ${data.columns.length} columnas. ¿Qué te gustaría saber?`);
+        openChat();
+
       } else {
         console.error("Upload failed");
         statusText.textContent = "Error en subida";
@@ -100,4 +112,69 @@ document.addEventListener('DOMContentLoaded', () => {
       statusText.textContent = "Error de Conexión";
     }
   }
+
+  /* --- CHATBOT LOGIC --- */
+  const chatSidebar = document.getElementById('chat-sidebar');
+  const toggleBtn = document.getElementById('toggle-chat-btn');
+  const closeBtn = document.getElementById('close-chat-btn');
+  const chatInput = document.getElementById('chat-input');
+  const sendBtn = document.getElementById('send-btn');
+  const chatMessages = document.getElementById('chat-messages');
+
+  function openChat() {
+    chatSidebar.classList.add('open');
+  }
+
+  function closeChat() {
+    chatSidebar.classList.remove('open');
+  }
+
+  toggleBtn.addEventListener('click', openChat);
+  closeBtn.addEventListener('click', closeChat);
+
+  // Send Message Logic
+  async function sendMessage() {
+    const message = chatInput.value.trim();
+    if (!message) return;
+
+    // 1. Mostrar mensaje usuario
+    appendMessage("user", message);
+    chatInput.value = '';
+
+    // 2. Llamar al backend
+    try {
+      const context = window.currentContext || {};
+      const response = await fetch(`${API_URL}/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message, context })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        appendMessage("bot", data.reply);
+      } else {
+        appendMessage("bot", "Lo siento, tuve un error al conectar con mi cerebro.");
+      }
+    } catch (error) {
+      appendMessage("bot", "Error de red. Verifica que el backend esté corriendo.");
+    }
+  }
+
+  function appendMessage(role, text) {
+    const div = document.createElement('div');
+    div.classList.add('message', role === 'user' ? 'user-message' : 'bot-message');
+    // Simple markdown parsing replacement (negritas)
+    div.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  sendBtn.addEventListener('click', sendMessage);
+  chatInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendMessage();
+  });
+
 });

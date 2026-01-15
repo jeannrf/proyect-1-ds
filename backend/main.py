@@ -17,9 +17,28 @@ app.add_middleware(
 def read_root():
     return {"message": "¡Hola! El servidor de AutoML Advisor está funcionando correctamente 🚀"}
 
+from pydantic import BaseModel
+from chat_service import ChatService
+
+# Modelos Pydantic
+class ChatRequest(BaseModel):
+    message: str
+    context: dict = {}
+
+# Inicializar servicio de chat
+chat_service = ChatService()
+
 @app.get("/health")
 def health_check():
     return {"status": "ok", "service": "backend"}
+
+@app.post("/chat")
+async def chat_endpoint(request: ChatRequest):
+    """
+    Endpoint para conversar con ConsultIA (Groq).
+    """
+    response = chat_service.get_response(request.message, request.context)
+    return {"reply": response}
 
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):

@@ -25,10 +25,21 @@
       <div class="logo-container">
         <h1>AutoML <span class="highlight">Advisor</span></h1>
       </div>
+
       <div class="nav-links">
         <a href="#features">Características</a>
         <a href="#how-it-works">Cómo funciona</a>
         <a href="app.html" class="cta-button small">Usar ya</a>
+      </div>
+
+      <div class="header-actions">
+        <button id="toggle-chat-btn" class="btn-icon" title="Abrir Asistente IA">
+          <span class="icon">🤖</span> ConsultIA
+        </button>
+        <div id="status-indicator" class="status-badge">
+          <span class="status-dot"></span>
+          <span id="status-text">Conectando...</span>
+        </div>
       </div>
     </div>
   </nav>
@@ -142,6 +153,34 @@
     <p>&copy; 2026 AutoML Advisor. Design by Equipo de desarrollo de la FIIS - UNI.</p>
   </footer>
 
+  <!-- Chat Sidebar -->
+  <aside id="chat-sidebar" class="chat-sidebar">
+    <div class="chat-header">
+      <div class="chat-title">
+        <span class="bot-avatar">🤖</span>
+        <div>
+          <h3>ConsultIA</h3>
+          <span class="status-text-online">En línea</span>
+        </div>
+      </div>
+      <button id="close-chat-btn" class="btn-close">×</button>
+    </div>
+
+    <div id="chat-messages" class="chat-messages">
+      <!-- Mensaje de bienvenida -->
+      <div class="message bot-message">
+        ¡Hola! Soy ConsultIA. Estoy aquí para ayudarte a analizar tus datos o resolver dudas sobre la plataforma. ¿En
+        qué puedo ayudarte hoy?
+      </div>
+    </div>
+
+    <div class="chat-input-area">
+      <input type="text" id="chat-input" placeholder="Escribe tu pregunta..." autocomplete="off">
+      <button id="send-btn" class="btn-send">➤</button>
+    </div>
+  </aside>
+
+  <script src="js/app.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const observerOptions = {

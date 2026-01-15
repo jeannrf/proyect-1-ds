@@ -11,6 +11,10 @@ class ChatService:
         else:
             self.client = groq.Groq(api_key=self.api_key)
 
+    def get_response(self, message: str, context: dict = None) -> str:
+        if not self.client:
+            return "Error: API Key de Groq no configurada. Por favor configura GROQ_API_KEY en el backend."
+
         # Obtener contexto del perfil del usuario si existe
         user_profile = context.get("user_profile", "") if context else ""
         profile_instruction = f"\nInformación del usuario y objetivos: {user_profile}\n" if user_profile else ""

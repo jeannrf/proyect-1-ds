@@ -1,19 +1,19 @@
 const API_URL = 'http://127.0.0.1:8000';
 
 async function checkServerStatus() {
+  const statusIndicator = document.getElementById('status-indicator');
   const statusText = document.getElementById('status-text');
-  const uploadArea = document.getElementById('upload-area');
 
   try {
-    const response = await fetch(`${API_URL}/`);
+    const response = await fetch(`${API_URL}/health`); // Use /health endpoint
     if (response.ok) {
+      statusIndicator.classList.add('status-online');
       statusText.textContent = "Sistema Online";
-      // MOSTRAR el área de carga cuando el servidor responda
-      uploadArea.style.display = "block";
     }
   } catch (error) {
-    statusText.textContent = "Servidor Desconectado (Ejecuta el backend)";
-    uploadArea.style.display = "none";
+    statusIndicator.classList.remove('status-online');
+    statusText.textContent = "Servidor Desconectado";
+    console.warn("Backend no disponible:", error);
   }
 }
 
@@ -62,10 +62,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Función auxiliar para actualizar la UI al cargar archivo
   function updateDropZoneUI(file) {
-    promptText.textContent = `Archivo listo: ${file.name}`;
-    promptText.style.fontWeight = 'bold';
-    promptText.style.color = '#e2e8f0'; // Color claro para resaltar
-    dropZone.style.borderColor = 'var(--success-color)';
-    dropZone.style.borderStyle = 'solid';
+    const fileInfo = document.getElementById('file-info');
+    dropZone.style.borderColor = 'var(--success)';
+    dropZone.style.background = 'rgba(16, 185, 129, 0.05)';
+
+    fileInfo.style.display = 'block';
+    fileInfo.innerHTML = `<strong>Archivo listo:</strong> ${file.name} <br> <small>${(file.size / 1024).toFixed(2)} KB</small>`;
+
+    // Aquí podríamos disparar la subida automática
+    uploadFile(file);
+  }
+
+  async function uploadFile(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const statusText = document.getElementById('status-text');
+    statusText.textContent = "Procesando...";
+
+    try {
+      const response = await fetch(`${API_URL}/upload`, {
+        method: 'POST',
+        body: formData
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Upload success:", data);
+        statusText.textContent = "¡Datos Procesados!";
+        // Aquí podrías actualizar la UI con los datos recibidos (data.preview, data.columns, etc)
+      } else {
+        console.error("Upload failed");
+        statusText.textContent = "Error en subida";
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      statusText.textContent = "Error de Conexión";
+    }
   }
 });

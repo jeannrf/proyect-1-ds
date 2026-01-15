@@ -12,25 +12,71 @@
 </head>
 
 <body>
-  <div class="container">
-    <div class="card">
-      <h1>AutoML Advisor</h1>
-      <p>¡Bienvenido! a tu analista de datos inteligente. Estamos listos para comenzar a procesar tus datasets.</p>
+  <div class="background-glow"></div>
 
-      <div id="status-indicator" class="status-box">
+  <div class="app-container">
+    <header class="main-header">
+      <div class="logo-container">
+        <h1>AutoML <span class="highlight">Advisor</span></h1>
+      </div>
+      <div id="status-indicator" class="status-badge">
         <span class="status-dot"></span>
-        <span id="status-text">Conectando con el servidor...</span>
+        <span id="status-text">Conectando...</span>
       </div>
+    </header>
 
-      <!-- Área de carga de archivos -->
-      <div id="upload-area" class="upload-container" style="display: none;">
-        <div class="drop-zone" id="drop-zone">
-          <span class="drop-zone__prompt">Arrastra tu dataset aquí o haz clic para buscar</span>
-          <input type="file" name="myFile" id="file-input" class="drop-zone__input" accept=".csv">
-        </div>
-        <div id="file-info" class="file-info"></div>
+    <main>
+      <section class="hero-section">
+        <h2>Tu Científico de Datos con <span class="gradient-text">IA</span></h2>
+        <p>Sube tus datos, entrena modelos automáticamente y recibe consejos estratégicos en segundos.</p>
+      </section>
+
+      <div class="dashboard-grid">
+        <!-- Panel Principal: Carga de Archivos -->
+        <section class="upload-card glass-panel">
+          <h3><span class="icon">📂</span> Cargar Dataset</h3>
+
+          <div id="upload-area" class="upload-area">
+            <div class="drop-zone" id="drop-zone">
+              <div class="upload-icon">☁️</div>
+              <p class="drop-zone__prompt">
+                Arrastra tu archivo CSV aquí <br>
+                <span class="sub-prompt">o haz clic para explorar</span>
+              </p>
+              <input type="file" name="myFile" id="file-input" class="drop-zone__input" accept=".csv">
+            </div>
+            <div id="file-info" class="file-info"></div>
+          </div>
+        </section>
+
+        <!-- Panel Lateral: Etapas del Proceso -->
+        <aside class="features-sidebar">
+          <div class="feature-card glass-panel">
+            <div class="feature-icon">🧠</div>
+            <div class="feature-content">
+              <h4>Auto Training</h4>
+              <p>Entrenamiento automático de múltiples modelos ML.</p>
+            </div>
+          </div>
+
+          <div class="feature-card glass-panel">
+            <div class="feature-icon">🤖</div>
+            <div class="feature-content">
+              <h4>Consultor IA</h4>
+              <p>Análisis y recomendaciones en lenguaje natural.</p>
+            </div>
+          </div>
+
+          <div class="feature-card glass-panel">
+            <div class="feature-icon">📊</div>
+            <div class="feature-content">
+              <h4>Visualización</h4>
+              <p>Gráficos interactivos de métricas y predicciones.</p>
+            </div>
+          </div>
+        </aside>
       </div>
-    </div>
+    </main>
   </div>
 
   <script src="js/app.js"></script>

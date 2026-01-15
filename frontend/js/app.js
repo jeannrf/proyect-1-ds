@@ -35,14 +35,14 @@ document.addEventListener('DOMContentLoaded', () => {
         window.userProfile = context;
 
         // Feedback visual
-        saveContextBtn.textContent = '✓ Contexto Guardado';
+        saveContextBtn.innerHTML = '<i class="fa-solid fa-check"></i> Contexto Guardado';
         saveContextBtn.classList.add('saved');
 
         // Guardar en localStorage para persistencia
         localStorage.setItem('userContext', context);
 
         setTimeout(() => {
-          saveContextBtn.innerHTML = '💾 Guardar Contexto';
+          saveContextBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Guardar Contexto';
           saveContextBtn.classList.remove('saved');
         }, 2000);
       }
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (fileInfo) {
       fileInfo.style.display = 'block';
-      fileInfo.innerHTML = `<strong>✓ Archivo cargado:</strong> ${file.name} <br> <small>${(file.size / 1024).toFixed(2)} KB</small>`;
+      fileInfo.innerHTML = `<strong><i class="fa-solid fa-file-circle-check"></i> Archivo cargado:</strong> ${file.name} <br> <small>${(file.size / 1024).toFixed(2)} KB</small>`;
     }
 
     // Subir automáticamente
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
           fileInfo.className = 'file-info-badge success';
           fileInfo.innerHTML = `
             <div class="file-success-indicator">
-              <span class="success-icon">✓</span>
+              <span class="success-icon"><i class="fa-solid fa-circle-check"></i></span>
               <div>
                 <strong>${data.filename}</strong><br>
                 <small>${data.columns.length} columnas • ${data.shape[0]} filas • Procesado en memoria</small>
@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error("Upload failed:", errorText);
         if (statusText) statusText.textContent = "Error en procesamiento";
         if (fileInfo) {
-          fileInfo.innerHTML = `<strong>⚠ Error:</strong> No se pudo procesar el archivo. <br><small>Verifica el formato.</small>`;
+          fileInfo.innerHTML = `<strong><i class="fa-solid fa-triangle-exclamation"></i> Error:</strong> No se pudo procesar el archivo. <br><small>Verifica el formato.</small>`;
           fileInfo.style.borderColor = 'rgba(239, 68, 68, 0.3)';
           fileInfo.style.background = 'rgba(239, 68, 68, 0.1)';
           fileInfo.style.color = '#ef4444';
@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (statusText) statusText.textContent = "Error de Conexión";
       // Mantener el archivo visible aunque haya error de conexión
       if (fileInfo && window.currentFile) {
-        fileInfo.innerHTML = `<strong>⚠ Sin conexión:</strong> ${window.currentFile.name} <br><small>Archivo guardado localmente. Reconecta el servidor.</small>`;
+        fileInfo.innerHTML = `<strong><i class="fa-solid fa-plug-circle-xmark"></i> Sin conexión:</strong> ${window.currentFile.name} <br><small>Archivo guardado localmente. Reconecta el servidor.</small>`;
         fileInfo.style.borderColor = 'rgba(251, 191, 36, 0.3)';
         fileInfo.style.background = 'rgba(251, 191, 36, 0.1)';
         fileInfo.style.color = '#fbbf24';
@@ -312,7 +312,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const sendBtn = document.getElementById('send-btn');
   const chatMessages = document.getElementById('chat-messages');
   const appContainer = document.querySelector('.app-container');
-  const chatTrigger = document.getElementById('chat-trigger');
 
   function openChat() {
     if (chatSidebar) chatSidebar.classList.add('open');
@@ -332,7 +331,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (toggleBtn) toggleBtn.addEventListener('click', toggleChat);
   if (closeBtn) closeBtn.addEventListener('click', closeChat);
-  if (chatTrigger) chatTrigger.addEventListener('click', openChat);
 
   // Send Message Logic
   async function sendMessage() {

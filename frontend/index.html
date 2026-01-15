@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="css/styles.css">
   <style>
     html {
@@ -34,7 +35,7 @@
 
       <div class="header-actions">
         <button id="toggle-chat-btn" class="btn-icon" title="Abrir Asistente IA">
-          <span class="icon">🤖</span> ConsultIA
+          <i class="fa-solid fa-robot"></i> ConsultIA
         </button>
         <div id="status-indicator" class="status-badge">
           <span class="status-dot"></span>
@@ -47,14 +48,15 @@
   <!-- Hero Section -->
   <header class="landing-hero fade-in-section">
     <div class="hero-content">
-      <span class="hero-badge">✨ Potenciado por Inteligencia Artificial</span>
+      <span class="hero-badge"><i class="fa-solid fa-wand-magic-sparkles"></i> Potenciado por Inteligencia
+        Artificial</span>
       <h1 class="hero-title">Machine Learning <br><span class="gradient-text">Avanzado al Instante</span></h1>
       <p class="hero-subtitle">
         Sube tus datasets y deja que nuestros algoritmos avanzados de Machine Learning
         descubran patrones, entrenen modelos y te den consejos estratégicos en segundos.
       </p>
       <div class="hero-actions">
-        <a href="app.html" class="cta-button primary">Empezar Ahora <span class="arrow">→</span></a>
+        <a href="app.html" class="cta-button primary">Empezar Ahora <i class="fa-solid fa-arrow-right"></i></a>
         <a href="#features" class="cta-button secondary">Ver Demo</a>
       </div>
     </div>
@@ -87,25 +89,25 @@
 
     <div class="features-grid">
       <div class="feature-box glass-panel fade-in-section delay-100">
-        <div class="icon-box">🌲</div>
+        <div class="icon-box"><i class="fa-solid fa-tree"></i></div>
         <h3>Random Forest</h3>
         <p>Ensemble learning para clasificación y regresión robusta, reduciendo el overfitting.</p>
       </div>
 
       <div class="feature-box glass-panel fade-in-section delay-200">
-        <div class="icon-box">🚀</div>
+        <div class="icon-box"><i class="fa-solid fa-rocket"></i></div>
         <h3>XGBoost & LightGBM</h3>
         <p>Algoritmos de Gradient Boosting optimizados para máxima velocidad y precisión.</p>
       </div>
 
       <div class="feature-box glass-panel fade-in-section delay-300">
-        <div class="icon-box">🕸️</div>
+        <div class="icon-box"><i class="fa-solid fa-network-wired"></i></div>
         <h3>Redes Neuronales</h3>
         <p>Deep Learning para patrones complejos y predicciones no lineales avanzadas.</p>
       </div>
 
       <div class="feature-box glass-panel fade-in-section delay-400">
-        <div class="icon-box">📈</div>
+        <div class="icon-box"><i class="fa-solid fa-chart-line"></i></div>
         <h3>Regresión Avanzada</h3>
         <p>Modelos lineales y polinomiales con regularización Lasso y Ridge.</p>
       </div>
@@ -123,7 +125,8 @@
       <div class="step-item fade-in-section">
         <div class="step-number">01</div>
         <h3>Sube tu Dataset</h3>
-        <p>Arrastra tu archivo CSV, Excel o JSON. El sistema detecta automáticamente tipos de variables y limpieza necesaria.</p>
+        <p>Arrastra tu archivo CSV, Excel o JSON. El sistema detecta automáticamente tipos de variables y limpieza
+          necesaria.</p>
       </div>
       <div class="step-connector"></div>
       <div class="step-item fade-in-section delay-200">
@@ -157,13 +160,13 @@
   <aside id="chat-sidebar" class="chat-sidebar">
     <div class="chat-header">
       <div class="chat-title">
-        <span class="bot-avatar">🤖</span>
+        <span class="bot-avatar"><i class="fa-solid fa-robot"></i></span>
         <div>
           <h3>ConsultIA</h3>
           <span class="status-text-online">En línea</span>
         </div>
       </div>
-      <button id="close-chat-btn" class="btn-close">×</button>
+      <button id="close-chat-btn" class="btn-close"><i class="fa-solid fa-xmark"></i></button>
     </div>
 
     <div id="chat-messages" class="chat-messages">
@@ -176,7 +179,7 @@
 
     <div class="chat-input-area">
       <input type="text" id="chat-input" placeholder="Escribe tu pregunta..." autocomplete="off">
-      <button id="send-btn" class="btn-send">➤</button>
+      <button id="send-btn" class="btn-send"><i class="fa-solid fa-paper-plane"></i></button>
     </div>
   </aside>
 

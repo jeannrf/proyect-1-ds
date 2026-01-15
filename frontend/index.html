@@ -4,20 +4,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AutoML Advisor</title>
+  <title>AutoML Advisor - Tu Científico de Datos con IA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
 </head>
 
 <body>
   <div class="background-glow"></div>
 
-  <div class="app-container">
-    <header class="main-header">
+  <!-- Navbar -->
+  <nav class="landing-nav glass-panel">
+    <div class="nav-content">
       <div class="logo-container">
         <h1>AutoML <span class="highlight">Advisor</span></h1>
+      </div>
+
+      <div class="nav-links">
+        <a href="#features">Características</a>
+        <a href="#how-it-works">Cómo funciona</a>
+        <a href="app.html" class="cta-button small">Usar ya</a>
       </div>
 
       <div class="header-actions">
@@ -29,61 +41,117 @@
           <span id="status-text">Conectando...</span>
         </div>
       </div>
-    </header>
+    </div>
+  </nav>
 
-    <main>
-      <section class="hero-section">
-        <h2>Tu Científico de Datos con <span class="gradient-text">IA</span></h2>
-        <p>Sube tus datos, entrena modelos automáticamente y recibe consejos estratégicos en segundos.</p>
-      </section>
-
-      <div class="dashboard-grid">
-        <!-- Panel Principal: Carga de Archivos -->
-        <section class="upload-card glass-panel">
-          <h3><span class="icon">📂</span> Cargar Dataset</h3>
-
-          <div id="upload-area" class="upload-area">
-            <div class="drop-zone" id="drop-zone">
-              <div class="upload-icon">☁️</div>
-              <p class="drop-zone__prompt">
-                Arrastra tu archivo CSV aquí <br>
-                <span class="sub-prompt">o haz clic para explorar</span>
-              </p>
-              <input type="file" name="myFile" id="file-input" class="drop-zone__input" accept=".csv">
-            </div>
-            <div id="file-info" class="file-info"></div>
-          </div>
-        </section>
-
-        <!-- Panel Lateral: Etapas del Proceso -->
-        <aside class="features-sidebar">
-          <div class="feature-card glass-panel">
-            <div class="feature-icon">🧠</div>
-            <div class="feature-content">
-              <h4>Auto Training</h4>
-              <p>Entrenamiento automático de múltiples modelos ML.</p>
-            </div>
-          </div>
-
-          <div class="feature-card glass-panel">
-            <div class="feature-icon">🤖</div>
-            <div class="feature-content">
-              <h4>Consultor IA</h4>
-              <p>Análisis y recomendaciones en lenguaje natural.</p>
-            </div>
-          </div>
-
-          <div class="feature-card glass-panel">
-            <div class="feature-icon">📊</div>
-            <div class="feature-content">
-              <h4>Visualización</h4>
-              <p>Gráficos interactivos de métricas y predicciones.</p>
-            </div>
-          </div>
-        </aside>
+  <!-- Hero Section -->
+  <header class="landing-hero fade-in-section">
+    <div class="hero-content">
+      <span class="hero-badge">✨ Potenciado por Inteligencia Artificial</span>
+      <h1 class="hero-title">Machine Learning <br><span class="gradient-text">Avanzado al Instante</span></h1>
+      <p class="hero-subtitle">
+        Sube tus datasets y deja que nuestros algoritmos avanzados de Machine Learning
+        descubran patrones, entrenen modelos y te den consejos estratégicos en segundos.
+      </p>
+      <div class="hero-actions">
+        <a href="app.html" class="cta-button primary">Empezar Ahora <span class="arrow">→</span></a>
+        <a href="#features" class="cta-button secondary">Ver Demo</a>
       </div>
-    </main>
-  </div>
+    </div>
+    <div class="hero-visual">
+      <!-- Abstract Visual Representation of ML Nodes -->
+      <div class="ml-visual-container">
+        <div class="node node-1"></div>
+        <div class="node node-2"></div>
+        <div class="node node-3"></div>
+        <div class="connection conn-1"></div>
+        <div class="connection conn-2"></div>
+        <div class="floating-card card-1">
+          <span>Accuracy</span>
+          <strong>98.5%</strong>
+        </div>
+        <div class="floating-card card-2">
+          <span>Model</span>
+          <strong>XGBoost</strong>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Features Section -->
+  <section id="features" class="landing-section">
+    <div class="section-header fade-in-section">
+      <h2>Algoritmos de <span class="highlight">Vanguardia</span></h2>
+      <p>Nuestra plataforma selecciona automáticamente el mejor modelo para tus datos.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-box glass-panel fade-in-section delay-100">
+        <div class="icon-box">🌲</div>
+        <h3>Random Forest</h3>
+        <p>Ensemble learning para clasificación y regresión robusta, reduciendo el overfitting.</p>
+      </div>
+
+      <div class="feature-box glass-panel fade-in-section delay-200">
+        <div class="icon-box">🚀</div>
+        <h3>XGBoost & LightGBM</h3>
+        <p>Algoritmos de Gradient Boosting optimizados para máxima velocidad y precisión.</p>
+      </div>
+
+      <div class="feature-box glass-panel fade-in-section delay-300">
+        <div class="icon-box">🕸️</div>
+        <h3>Redes Neuronales</h3>
+        <p>Deep Learning para patrones complejos y predicciones no lineales avanzadas.</p>
+      </div>
+
+      <div class="feature-box glass-panel fade-in-section delay-400">
+        <div class="icon-box">📈</div>
+        <h3>Regresión Avanzada</h3>
+        <p>Modelos lineales y polinomiales con regularización Lasso y Ridge.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it Works -->
+  <section id="how-it-works" class="landing-section alt-bg">
+    <div class="section-header fade-in-section">
+      <h2>Flujo de Trabajo <span class="highlight">Simplificado</span></h2>
+      <p>De datos crudos a insights valiosos en tres simples pasos.</p>
+    </div>
+
+    <div class="steps-container">
+      <div class="step-item fade-in-section">
+        <div class="step-number">01</div>
+        <h3>Sube tu Dataset</h3>
+        <p>Arrastra tu archivo CSV. El sistema detecta automáticamente tipos de variables y limpieza necesaria.</p>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-item fade-in-section delay-200">
+        <div class="step-number">02</div>
+        <h3>Auto-Training</h3>
+        <p>El motor de IA entrena múltiples modelos en paralelo y compite para encontrar el mejor desempeño.</p>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-item fade-in-section delay-400">
+        <div class="step-number">03</div>
+        <h3>Obtén Resultados</h3>
+        <p>Visualiza métricas, descarga el modelo y recibe consejos accionables de nuestro Consultor IA.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section Footer -->
+  <section class="final-cta fade-in-section">
+    <div class="cta-content glass-panel">
+      <h2>¿Listo para optimizar tus modelos?</h2>
+      <p>Únete a la revolución del AutoML hoy mismo.</p>
+      <a href="app.html" class="cta-button primary large">Lanzar Aplicación</a>
+    </div>
+  </section>
+
+  <footer class="main-footer">
+    <p>&copy; 2026 AutoML Advisor. Design by Equipo de desarrollo de la FIIS - UNI.</p>
+  </footer>
 
   <!-- Chat Sidebar -->
   <aside id="chat-sidebar" class="chat-sidebar">
@@ -113,6 +181,28 @@
   </aside>
 
   <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
+
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll('.fade-in-section').forEach(section => {
+        observer.observe(section);
+      });
+    });
+  </script>
 </body>
 
 </html>

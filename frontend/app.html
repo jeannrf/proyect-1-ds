@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoML Advisor - App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <div class="background-glow"></div>
+
+    <div class="app-container">
+        <header class="main-header">
+            <div class="logo-container">
+                <!-- Make logo clickable to go back home -->
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    <h1>AutoML <span class="highlight">Advisor</span></h1>
+                </a>
+            </div>
+
+            <div class="header-actions">
+                <button id="toggle-chat-btn" class="btn-icon" title="Abrir Asistente IA">
+                    <span class="icon">🤖</span> ConsultIA
+                </button>
+                <div id="status-indicator" class="status-badge">
+                    <span class="status-dot"></span>
+                    <span id="status-text">Conectando...</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section class="hero-section" style="margin-bottom: 2rem;">
+                <h2>Panel de Control <span class="gradient-text">IA</span></h2>
+                <p>Sube tus datos y deja que nuestros algoritmos hagan el trabajo duro.</p>
+            </section>
+
+            <div class="dashboard-grid">
+                <!-- Panel Principal: Carga de Archivos -->
+                <section class="upload-card glass-panel">
+                    <h3><span class="icon">📂</span> Cargar Dataset</h3>
+
+                    <div id="upload-area" class="upload-area">
+                        <div class="drop-zone" id="drop-zone">
+                            <div class="upload-icon">☁️</div>
+                            <p class="drop-zone__prompt">
+                                Arrastra tu archivo CSV aquí <br>
+                                <span class="sub-prompt">o haz clic para explorar</span>
+                            </p>
+                            <input type="file" name="myFile" id="file-input" class="drop-zone__input" accept=".csv">
+                        </div>
+                        <div id="file-info" class="file-info"></div>
+                    </div>
+                </section>
+
+                <!-- Panel Lateral: Etapas del Proceso -->
+                <aside class="features-sidebar">
+                    <div class="feature-card glass-panel">
+                        <div class="feature-icon">🧠</div>
+                        <div class="feature-content">
+                            <h4>Auto Training</h4>
+                            <p>Entrenamiento automático de múltiples modelos ML.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card glass-panel">
+                        <div class="feature-icon">🤖</div>
+                        <div class="feature-content">
+                            <h4>Consultor IA</h4>
+                            <p>Análisis y recomendaciones en lenguaje natural.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-card glass-panel">
+                        <div class="feature-icon">📊</div>
+                        <div class="feature-content">
+                            <h4>Visualización</h4>
+                            <p>Gráficos interactivos de métricas y predicciones.</p>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </main>
+    </div>
+
+    <!-- Chat Sidebar -->
+    <aside id="chat-sidebar" class="chat-sidebar">
+        <div class="chat-header">
+            <div class="chat-title">
+                <span class="bot-avatar">🤖</span>
+                <div>
+                    <h3>ConsultIA</h3>
+                    <span class="status-text-online">En línea</span>
+                </div>
+            </div>
+            <button id="close-chat-btn" class="btn-close">×</button>
+        </div>
+
+        <div id="chat-messages" class="chat-messages">
+            <div class="message bot-message">
+                ¡Hola! Soy ConsultIA. Estoy aquí para ayudarte a analizar tus datos o resolver dudas sobre la
+                plataforma. ¿En qué puedo ayudarte hoy?
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Escribe tu pregunta..." autocomplete="off">
+            <button id="send-btn" class="btn-send">➤</button>
+        </div>
+    </aside>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>

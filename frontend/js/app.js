@@ -87,7 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
     formData.append('file', file);
 
     const statusText = document.getElementById('status-text');
-    if (statusText) statusText.textContent = "Procesando...";
+    const userContext = document.getElementById('user-context')?.value || "";
+
+    if (statusText) statusText.textContent = "Analizando...";
 
     try {
       const response = await fetch(`${API_URL}/upload`, {
@@ -100,16 +102,27 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Upload success:", data);
         if (statusText) statusText.textContent = "¡Datos Procesados!";
 
-        // Guardar contexto para el chat (simulado por ahora)
+        // Guardar contexto para el chat
         window.currentContext = {
           has_data: true,
           filename: data.filename,
           columns: data.columns,
-          format: data.detected_format
+          format: data.detected_format,
+          user_profile: userContext,
+          analysis_summary: data.analysis_summary
         };
 
-        // Notificar al usuario en el chat si está abierto
-        appendMessage("bot", `¡He procesado tu archivo **${data.filename}**! Veo que tiene ${data.columns.length} columnas. ¿Qué te gustaría saber?`);
+        // Renderizar resultados de ML
+        if (data.automl_result) {
+          renderMLResults(data.automl_result);
+        }
+
+        // Notificar al usuario en el chat
+        const welcomeMsg = userContext
+          ? `¡Listo! He procesado **${data.filename}** teniendo en cuenta tu objetivo: *"${userContext}"*. He encontrado que el mejor modelo es **${data.automl_result.best_model}**. ¿Qué analizamos ahora?`
+          : `¡He procesado tu archivo **${data.filename}**! He detectado ${data.columns.length} columnas. El mejor modelo para estos datos es **${data.automl_result.best_model}**. ¿En qué puedo ayudarte?`;
+
+        appendMessage("bot", welcomeMsg);
         openChat();
 
       } else {
@@ -120,6 +133,39 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error("Error:", error);
       if (statusText) statusText.textContent = "Error de Conexión";
     }
+  }
+
+  function renderMLResults(result) {
+    const container = document.getElementById('ml-results-container');
+    if (!container || !result.all_results) return;
+
+    container.innerHTML = `
+        <div class="results-summary">
+            <span class="badge-target">Objetivo: ${result.target_used}</span>
+            <span class="badge-type">${result.problem_type}</span>
+        </div>
+    `;
+
+    // Ordenar resultados por score descendente
+    const sortedModels = Object.entries(result.all_results).sort(([, a], [, b]) => b - a);
+
+    sortedModels.forEach(([name, score]) => {
+      const isBest = name === result.best_model;
+      const scorePercent = (score * 100).toFixed(1);
+
+      const card = document.createElement('div');
+      card.className = `model-result-item ${isBest ? 'best' : ''}`;
+      card.innerHTML = `
+            <div class="model-info">
+                <span class="model-name">${name}</span>
+                <span class="model-score">${scorePercent}%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: ${scorePercent}%"></div>
+            </div>
+        `;
+      container.appendChild(card);
+    });
   }
 
   /* --- CHATBOT LOGIC --- */

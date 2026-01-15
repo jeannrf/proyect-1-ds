@@ -70,6 +70,7 @@ async def upload_file(file: UploadFile = File(...)):
             "columns": df.columns.tolist(),
             "preview": df.head(5).to_dict(orient="records"),
             "analysis_summary": analysis_summary,
+            "automl_result": DataAnalyzer.analyze(df).get("automl_result", {}),
             "file_path": file_path
         }
     except Exception as e:

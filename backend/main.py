@@ -1,6 +1,6 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from files import DataLoader, FileManager
+from files import DataLoader
 from ml import DataAnalyzer
 from dotenv import load_dotenv
 
@@ -49,19 +49,19 @@ async def chat_endpoint(request: ChatRequest):
 async def upload_file(file: UploadFile = File(...)):
     """
     Endpoint para subir archivos (CSV, Excel, JSON, Parquet).
-    Utiliza DataLoader para detectar y cargar el contenido.
+    Los datos se procesan en memoria - NO se guardan en disco.
     """
     try:
         content = await file.read()
         
-        # 1. Guardar archivo temporalmente
-        file_path = FileManager.save_file(content, file.filename)
-        
-        # 2. Cargar datos
+        # Cargar datos directamente en memoria (sin guardar en disco)
         df = DataLoader.load_data(content, file.filename)
         
-        # 3. Generar análisis para el chat
+        # Generar análisis para el chat
         analysis_summary = DataAnalyzer.generate_llm_summary(df)
+        
+        # Obtener resultados de AutoML
+        automl_result = DataAnalyzer.analyze(df).get("automl_result", {})
         
         return {
             "filename": file.filename,
@@ -70,8 +70,8 @@ async def upload_file(file: UploadFile = File(...)):
             "columns": df.columns.tolist(),
             "preview": df.head(5).to_dict(orient="records"),
             "analysis_summary": analysis_summary,
-            "automl_result": DataAnalyzer.analyze(df).get("automl_result", {}),
-            "file_path": file_path
+            "automl_result": automl_result,
+            "status": "processed_in_memory"
         }
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error processing file: {str(e)}")

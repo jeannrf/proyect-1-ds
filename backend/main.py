@@ -1,6 +1,7 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from files import DataLoader
+from files import DataLoader, FileManager
+from ml import DataAnalyzer
 from dotenv import load_dotenv
 
 # Cargar variables de entorno del archivo .env
@@ -52,14 +53,24 @@ async def upload_file(file: UploadFile = File(...)):
     """
     try:
         content = await file.read()
+        
+        # 1. Guardar archivo temporalmente
+        file_path = FileManager.save_file(content, file.filename)
+        
+        # 2. Cargar datos
         df = DataLoader.load_data(content, file.filename)
+        
+        # 3. Generar análisis para el chat
+        analysis_summary = DataAnalyzer.generate_llm_summary(df)
         
         return {
             "filename": file.filename,
             "detected_format": DataLoader.detect_format(content),
             "shape": df.shape,
             "columns": df.columns.tolist(),
-            "preview": df.head(5).to_dict(orient="records")
+            "preview": df.head(5).to_dict(orient="records"),
+            "analysis_summary": analysis_summary,
+            "file_path": file_path
         }
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error processing file: {str(e)}")
